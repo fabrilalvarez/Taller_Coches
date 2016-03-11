@@ -47,8 +47,8 @@ class MyVentanaPrincipal(Gtk.Window):
         # TreeViewColumn
         renderer1 = Gtk.CellRendererText()
         column1 = Gtk.TreeViewColumn("matricula", renderer1, text=0)
-        column2 = Gtk.TreeViewColumn("marca", renderer1, text=0)
-        column3 = Gtk.TreeViewColumn("km", renderer1, text=0)
+        column2 = Gtk.TreeViewColumn("marca", renderer1, text=1)
+        column3 = Gtk.TreeViewColumn("km", renderer1, text=2)
         self.tree1.append_column(column1)
         self.tree1.append_column(column2)
         self.tree1.append_column(column3)
@@ -79,8 +79,8 @@ class MyVentanaPrincipal(Gtk.Window):
         # TreeViewColumn
         renderer2 = Gtk.CellRendererText()
         column1 = Gtk.TreeViewColumn("DNI", renderer2, text=0)
-        column2 = Gtk.TreeViewColumn("Nombre", renderer2, text=0)
-        column3 = Gtk.TreeViewColumn("Apellido", renderer2, text=0)
+        column2 = Gtk.TreeViewColumn("Nombre", renderer2, text=1)
+        column3 = Gtk.TreeViewColumn("Apellido", renderer2, text=2)
         self.tree2.append_column(column1)
         self.tree2.append_column(column2)
         self.tree2.append_column(column3)
@@ -106,23 +106,23 @@ class MyVentanaPrincipal(Gtk.Window):
         self.box.pack_start(self.stack, False, False, 0)
 
     def add_acciones_al_tool_bar_coche(self, action_group):
-        action_new1 = Gtk.Action("FileNewStandard","_New","Create a new file",Gtk.STOCK_NEW)
+        action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
         action_new1.connect("activate", self.nuevo_coche)
 
         action_fileshowall = Gtk.Action("FileShowAll", "_Show", "Show All", Gtk.STOCK_FIND)
         action_fileshowall.connect("activate", self.rellenarTreeViewCoches)
 
-        action_group.add_action_with_accel(action_new1, None)
+        action_group.add_action(action_new1)
         action_group.add_action(action_fileshowall)
 
     def add_acciones_al_tool_bar_cliente(self, action_group):
-        action_new1 = Gtk.Action("FileNewStandard","_New","Create a new file",Gtk.STOCK_NEW)
+        action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
         action_new1.connect("activate", self.nuevo_cliente)
 
         action_fileshowall = Gtk.Action("FileShowAll", None, None, Gtk.STOCK_FIND)
         action_fileshowall.connect("activate", self.rellenarTreeViewClientes)
 
-        action_group.add_action_with_accel(action_new1, None)
+        action_group.add_action(action_new1)
         action_group.add_action(action_fileshowall)
 
     def create_ui_manager(self):
@@ -145,8 +145,8 @@ class MyVentanaPrincipal(Gtk.Window):
     def rellenarTreeViewCoches(self, widget):
         model = Gtk.ListStore(str, str, int)
         for row in bd.InsertCoche.MyCoche().selectALL():
-            print(row[0],row[1],row[2])
-            model.append([row[0],row[1],row[2]])
+            print(row[0], row[1], row[2])
+            model.append([row[0], row[1], row[2]])
 
         self.model1 = model
         self.tree1.set_model(self.model1)
@@ -155,8 +155,8 @@ class MyVentanaPrincipal(Gtk.Window):
     def rellenarTreeViewClientes(self, widget):
         model = Gtk.ListStore(str, str, str)
         for row in bd.InsertCliente.MyCliente().selectALL():
-            print(row[0],row[1],row[2])
-            model.append([row[0],row[1],row[2]])
+            print(row[0], row[1], row[2])
+            model.append([row[0], row[1], row[2]])
 
         self.model2 = model
         self.tree2.set_model(self.model2)
