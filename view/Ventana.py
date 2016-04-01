@@ -1,14 +1,20 @@
+import os.path
 from gi.repository import Gtk, Gdk
+from reportlab.lib.styles import getSampleStyleSheet
 import view.NuevoCoche
 import view.NuevoCliente
 import bd.InsertCoche
 import bd.InsertCliente
+from reportlab.platypus import Paragraph, Image, SimpleDocTemplate, Spacer, Table
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
 
 UI_INFO = """
 <ui>
   <toolbar name='ToolBar'>
     <toolitem action='FileNewStandard' />
     <toolitem action='FileShowAll' />
+    <toolitem action='Factura' />
     <toolitem action='Delete' />
     <toolitem action='Help' />
   </toolbar>
@@ -32,6 +38,7 @@ class MyVentanaPrincipal(Gtk.Window):
         self.add_acciones_al_tool_bar(action_group,
                                       self.nuevo_coche,
                                       self.rellenarTreeViewCoches,
+                                      self.impresion,
                                       self.delete,
                                       self.help)
         manejador_ui = self.create_ui_manager()
@@ -68,6 +75,7 @@ class MyVentanaPrincipal(Gtk.Window):
         self.add_acciones_al_tool_bar(action_group,
                                       self.nuevo_cliente,
                                       self.rellenarTreeViewClientes,
+                                      self.impresion,
                                       self.delete,
                                       self.help)
         manejador_ui = self.create_ui_manager()
@@ -115,21 +123,25 @@ class MyVentanaPrincipal(Gtk.Window):
         self.box.pack_start(self.stack_switcher, False, False, 0)
         self.box.pack_start(self.stack, False, False, 0)
 
-    def add_acciones_al_tool_bar(self, action_group, metodo, metodo1, metodo2, metodo3):
+    def add_acciones_al_tool_bar(self, action_group, metodo0, metodo1, metodo2, metodo3, metodo4):
         action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
-        action_new1.connect("activate", metodo)
+        action_new1.connect("activate", metodo0)
 
         action_fileshowall = Gtk.Action("FileShowAll", "_Show", "Show All", Gtk.STOCK_FIND)
         action_fileshowall.connect("activate", metodo1)
 
+        action_factura = Gtk.Action("Factura", "_Factura", "Factura", Gtk.STOCK_PRINT)
+        action_factura.connect("activate", metodo2)
+
         action_delete = Gtk.Action("Delete", "_Delete", "Delete", Gtk.STOCK_CLEAR)
-        action_delete.connect("activate", metodo2)
+        action_delete.connect("activate", metodo3)
 
         action_help = Gtk.Action("Help", "_Help", "Help", Gtk.STOCK_HELP)
-        action_help.connect("activate", metodo3)
+        action_help.connect("activate", metodo4)
 
         action_group.add_action(action_new1)
         action_group.add_action(action_fileshowall)
+        action_group.add_action(action_factura)
         action_group.add_action(action_delete)
         action_group.add_action(action_help)
 
@@ -178,6 +190,49 @@ class MyVentanaPrincipal(Gtk.Window):
 
     def cerrar(self, widget):
         Gtk.main_quit()
+
+    def impresion(self, widget):
+        # cabecera
+        hojaEstilo = getSampleStyleSheet()
+
+        guion = []
+
+        cabecera = hojaEstilo['Heading4']
+        cabecera.pageBreakBefore = 0
+        cabecera.KepWithNext = 0  # Empezar pagina en blanco o no
+        cabecera.backColor = colors.deepskyblue
+
+        parrafo = Paragraph("Taller de coches", cabecera)
+
+        guion.append(parrafo)
+        guion.append(Spacer(0, 20))
+
+        # cuerpo
+        estilo = hojaEstilo['BodyText']
+
+        cadena = "informacion de los clientes\n"
+
+        tabla = []
+        for row in bd.InsertCliente.MyCliente().selectALL():
+            tabla.append(row)
+
+        tablaa = Table(tabla)
+
+        parrafo2 = Paragraph(cadena, estilo)
+
+        guion.append(parrafo2)
+        guion.append(tablaa)
+        guion.append(Spacer(0, 20))
+
+        # añadir imagen
+        imagen = "../Taller_Coches/imagenes/clientes_img.jpeg"
+        imagen_logo = Image(os.path.realpath(imagen), width=100, height=50)
+        guion.append(imagen_logo)
+
+        doc = SimpleDocTemplate("clientes.pdf", pagesize=A4, showBoundary=1)
+
+        doc.build(guion)
+        print("pdf creado")
 
 
 def lanzar():
