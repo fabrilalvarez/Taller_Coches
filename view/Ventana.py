@@ -9,6 +9,8 @@ UI_INFO = """
   <toolbar name='ToolBar'>
     <toolitem action='FileNewStandard' />
     <toolitem action='FileShowAll' />
+    <toolitem action='Delete' />
+    <toolitem action='Help' />
   </toolbar>
 </ui>
 """
@@ -27,7 +29,11 @@ class MyVentanaPrincipal(Gtk.Window):
 
         # Creamos Tool bar Coche
         action_group = Gtk.ActionGroup("my_tool_bar_1")
-        self.add_acciones_al_tool_bar_coche(action_group)
+        self.add_acciones_al_tool_bar(action_group,
+                                      self.nuevo_coche,
+                                      self.rellenarTreeViewCoches,
+                                      self.delete,
+                                      self.help)
         manejador_ui = self.create_ui_manager()
         manejador_ui.insert_action_group(action_group)
         self.toolbarCoche = manejador_ui.get_widget("/ToolBar")
@@ -59,7 +65,11 @@ class MyVentanaPrincipal(Gtk.Window):
 
         # Creamos Tool bar Cliente
         action_group = Gtk.ActionGroup("my_tool_bar_B")
-        self.add_acciones_al_tool_bar_cliente(action_group)
+        self.add_acciones_al_tool_bar(action_group,
+                                      self.nuevo_cliente,
+                                      self.rellenarTreeViewClientes,
+                                      self.delete,
+                                      self.help)
         manejador_ui = self.create_ui_manager()
         manejador_ui.insert_action_group(action_group)
         self.toolbarCliente = manejador_ui.get_widget("/ToolBar")
@@ -105,25 +115,23 @@ class MyVentanaPrincipal(Gtk.Window):
         self.box.pack_start(self.stack_switcher, False, False, 0)
         self.box.pack_start(self.stack, False, False, 0)
 
-    def add_acciones_al_tool_bar_coche(self, action_group):
+    def add_acciones_al_tool_bar(self, action_group, metodo, metodo1, metodo2, metodo3):
         action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
-        action_new1.connect("activate", self.nuevo_coche)
+        action_new1.connect("activate", metodo)
 
         action_fileshowall = Gtk.Action("FileShowAll", "_Show", "Show All", Gtk.STOCK_FIND)
-        action_fileshowall.connect("activate", self.rellenarTreeViewCoches)
+        action_fileshowall.connect("activate", metodo1)
+
+        action_delete = Gtk.Action("Delete", "_Delete", "Delete", Gtk.STOCK_CLEAR)
+        action_delete.connect("activate", metodo2)
+
+        action_help = Gtk.Action("Help", "_Help", "Help", Gtk.STOCK_HELP)
+        action_help.connect("activate", metodo3)
 
         action_group.add_action(action_new1)
         action_group.add_action(action_fileshowall)
-
-    def add_acciones_al_tool_bar_cliente(self, action_group):
-        action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
-        action_new1.connect("activate", self.nuevo_cliente)
-
-        action_fileshowall = Gtk.Action("FileShowAll", None, None, Gtk.STOCK_FIND)
-        action_fileshowall.connect("activate", self.rellenarTreeViewClientes)
-
-        action_group.add_action(action_new1)
-        action_group.add_action(action_fileshowall)
+        action_group.add_action(action_delete)
+        action_group.add_action(action_help)
 
     def create_ui_manager(self):
         uimanager = Gtk.UIManager()
@@ -141,6 +149,12 @@ class MyVentanaPrincipal(Gtk.Window):
 
     def nuevo_cliente(self, widget):
         view.NuevoCliente.lanzar()
+
+    def help(self, widget):
+        print("heyyy... pringao necesitas ayuda? JODETE!")
+
+    def delete(self, widget):
+        print("eres un flipao que vas a borrar")
 
     def rellenarTreeViewCoches(self, widget):
         model = Gtk.ListStore(str, str, int)
