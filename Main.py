@@ -1,3 +1,4 @@
+import sqlite3
 from gi.repository import Gtk
 import bd.Loggin
 import view.Ventana
@@ -119,10 +120,13 @@ class MyMain(Gtk.Window):
         """
         Se cra el usuario cuando accedemos al boton nuevo usuario de la menu bar.
         """
+        #try:
         bd.Loggin.Loggin().crearUsuario(self.entry1.get_text(), self.entry2.get_text())
         print("Usuario creado:")
         print("user " + self.entry1.get_text())
         print("pass " + self.entry2.get_text())
+        #except sqlite3.IntegrityError:
+        #    print("noo fiera...!")
 
 
 window = MyMain()

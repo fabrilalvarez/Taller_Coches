@@ -35,11 +35,14 @@ class MyCliente:
     def selectALL(self):
         datos_encontrados = []
         for row in self.cursor.execute("SELECT * FROM clientes"):
-            datos_encontrados.append([row[0],row[1],row[2]])
+            datos_encontrados.append([row[0], row[1], row[2]])
             # print("clientes 1: "+row[0])
             # print("clientes 2: "+row[1])
             # print("clientes 3: "+row[2])
-        return  datos_encontrados
+        return datos_encontrados
+
+    def borrar(self, dni):
+        self.cursor.execute("DELETE * FROM clientes WHERE dni = '" + dni + "'")
 
     def close(self):
         print("conexion a bd cerrada")

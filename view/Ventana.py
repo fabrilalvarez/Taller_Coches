@@ -1,4 +1,7 @@
+import html
 import os.path
+import codecs
+from html import *
 from gi.repository import Gtk, Gdk
 from reportlab.lib.styles import getSampleStyleSheet
 import view.NuevoCoche
@@ -25,11 +28,12 @@ UI_INFO = """
 class MyVentanaPrincipal(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Taller de coches para DI")
-        self.set_default_size(100, 100)
+        self.set_default_size(10, 10)
         self.set_border_width(10)
 
         # Caja contenedora
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.box.set_size_request(500, 500)
         self.add(self.box)
         #########################################################################
 
@@ -121,7 +125,7 @@ class MyVentanaPrincipal(Gtk.Window):
 
         # Se añaden los paquetes a la caja
         self.box.pack_start(self.stack_switcher, False, False, 0)
-        self.box.pack_start(self.stack, False, False, 0)
+        self.box.pack_start(self.stack, True, True, 0)
 
     def add_acciones_al_tool_bar(self, action_group, metodo0, metodo1, metodo2, metodo3, metodo4):
         action_new1 = Gtk.Action("FileNewStandard", "_New", "Create a new file", Gtk.STOCK_NEW)
@@ -156,7 +160,6 @@ class MyVentanaPrincipal(Gtk.Window):
         self.add_accel_group(accelgroup)
         return uimanager
 
-
     def nuevo_coche(self, widget):
         view.NuevoCoche.lanzar()
 
@@ -164,10 +167,14 @@ class MyVentanaPrincipal(Gtk.Window):
         view.NuevoCliente.lanzar()
 
     def help(self, widget):
-        print("heyyy... pringao necesitas ayuda? JODETE!")
+        print("documentacion")
+        f=codecs.open(html.index.html, 'r')
+        print(f.read())
 
     def delete(self, widget):
-        print("eres un flipao que vas a borrar")
+        #Hay que capturar de la tabla el dni seleccionado
+        bd.InsertCliente.MyCliente().borrar("444")
+        #Luego Hay que saber si es coche y cliente
 
     def rellenarTreeViewCoches(self, widget):
         model = Gtk.ListStore(str, str, int)
