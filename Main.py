@@ -15,6 +15,15 @@ UI_INFO = """
 
 class MyMain(Gtk.Window):
     def __init__(self):
+        """
+        Clase principal MyMAin,
+        se crea una barra de menu con la opcion crear nuevo usuario.
+        una caja contenedora que contiene 3 paquetes,
+        el primer paquete, situado en la parte superior contiene un entry text de usuario y su label.
+        el segundo paquete, situado en la parte central contiene un entry text de contraseña y label.
+        el tercer paquete, situado en la parte inferior contiene un contiene dos botones, cancelar y aceptar.
+        Se conecta en la base de datos.
+        """
         Gtk.Window.__init__(self, title="Taller de coches para DI")
         self.set_border_width(40)
 
@@ -67,6 +76,9 @@ class MyMain(Gtk.Window):
         bd.Loggin.Loggin()
 
     def add_acciones_al_menu(self, action_group):
+        """
+        Se añaden acciones al menu.
+        """
         acciones_archivo = Gtk.Action("Archivo", "Archivo", None, None)
         action_group.add_action(acciones_archivo)
 
@@ -86,11 +98,17 @@ class MyMain(Gtk.Window):
         return uimanager
 
     def on_button1_clicked(self, button):
+        """
+        Se cierra la aplicacion
+        """
         print("Cerrando la aplicación")
         bd.Loggin.Loggin().close()
         Gtk.main_quit()
 
     def on_button2_clicked(self, button):
+        """
+        Accede a la base de datos y accede a la nueva ventana
+        """
         if bd.Loggin.Loggin().verificarDatos(self.entry1.get_text(), self.entry2.get_text()):
             print("Accediendo... ")
             window.set_visible(False)
@@ -98,6 +116,9 @@ class MyMain(Gtk.Window):
             bd.Loggin.Loggin().close()
 
     def on_button_nuevo_menu_item_clicked(self, button):
+        """
+        Se cra el usuario cuando accedemos al boton nuevo usuario de la menu bar.
+        """
         bd.Loggin.Loggin().crearUsuario(self.entry1.get_text(), self.entry2.get_text())
         print("Usuario creado:")
         print("user " + self.entry1.get_text())

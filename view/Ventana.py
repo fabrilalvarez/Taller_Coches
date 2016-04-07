@@ -25,7 +25,7 @@ UI_INFO = """
 class MyVentanaPrincipal(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Taller de coches para DI")
-        self.set_default_size(10, 10)
+        self.set_default_size(100, 100)
         self.set_border_width(10)
 
         # Caja contenedora
