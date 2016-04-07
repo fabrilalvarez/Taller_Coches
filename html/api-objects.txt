@@ -1,0 +1,10 @@
+Main	Main-module.html
+Main.UI_INFO	Main-module.html#UI_INFO
+Main.window	Main-module.html#window
+Main.MyMain	Main.MyMain-class.html
+Main.MyMain.on_button_nuevo_menu_item_clicked	Main.MyMain-class.html#on_button_nuevo_menu_item_clicked
+Main.MyMain.add_acciones_al_menu	Main.MyMain-class.html#add_acciones_al_menu
+Main.MyMain.create_ui_manager	Main.MyMain-class.html#create_ui_manager
+Main.MyMain.on_button2_clicked	Main.MyMain-class.html#on_button2_clicked
+Main.MyMain.on_button1_clicked	Main.MyMain-class.html#on_button1_clicked
+Main.MyMain.__init__	Main.MyMain-class.html#__init__
