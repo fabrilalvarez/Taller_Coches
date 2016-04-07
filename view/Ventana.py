@@ -156,6 +156,7 @@ class MyVentanaPrincipal(Gtk.Window):
         self.add_accel_group(accelgroup)
         return uimanager
 
+
     def nuevo_coche(self, widget):
         view.NuevoCoche.lanzar()
 
