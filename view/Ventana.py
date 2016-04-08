@@ -167,8 +167,8 @@ class MyVentanaPrincipal(Gtk.Window):
         view.NuevoCliente.lanzar()
 
     def help(self, widget):
-        print("documentacion")
-        f=codecs.open(html.index.html, 'r')
+        print("Esto accede a la documentacion generada por epydoc index.html")
+        f=codecs.open("index.html", 'r')
         print(f.read())
 
     def delete(self, widget):

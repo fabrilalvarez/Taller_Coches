@@ -126,7 +126,7 @@ class MyMain(Gtk.Window):
         print("user " + self.entry1.get_text())
         print("pass " + self.entry2.get_text())
         #except sqlite3.IntegrityError:
-        #    print("noo fiera...!")
+        #    print("El usuario ya existe!")
 
 
 window = MyMain()
